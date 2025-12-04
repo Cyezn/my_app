@@ -1,5 +1,5 @@
 pipeline {
-    agent any  // runs on your Ubuntu agent
+    agent any  // Runs on your Ubuntu agent
 
     environment {
         DOCKERHUB_CREDENTIALS = 'dockerhub-creds'  // Docker Hub credentials in Jenkins
@@ -19,11 +19,7 @@ pipeline {
         stage('Setup Python Environment') {
             steps {
                 sh '''
-                    # Install python3-venv if missing
-                    sudo apt update
-                    sudo apt install -y python3-venv python3-pip
-
-                    # Create virtual environment
+                    # Create Python virtual environment
                     python3 -m venv .venv
 
                     # Activate and install dependencies
@@ -80,19 +76,4 @@ pipeline {
                         kubectl set image deployment/fastapi-demo web=${DOCKER_IMAGE}:${IMAGE_TAG} --record || true
                         kubectl apply -f kubernetes/deployment.yaml
                         kubectl apply -f kubernetes/service.yaml
-                        kubectl rollout status deployment/fastapi-demo --timeout=120s
-                    '''
-                }
-            }
-        }
-    }
-
-    post {
-        success {
-            echo "Pipeline completed successfully. Image: ${DOCKER_IMAGE}:${IMAGE_TAG}"
-        }
-        failure {
-            echo "Pipeline failed."
-        }
-    }
-}
+                        kubectl
