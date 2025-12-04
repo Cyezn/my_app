@@ -3,9 +3,9 @@ kind: Service
 metadata:
   name: fastapi-demo
 spec:
+  type: LoadBalancer
   selector:
     app: fastapi-demo
   ports:
     - port: 80
-      targetPort: 8000
-  type: ClusterIP
+      targetPort: 80
